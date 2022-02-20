@@ -7,9 +7,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class CarouselViewAdapter extends RecyclerView.Adapter<CarouselViewAdapter.CarouselAdapterViewHolder> {
+public class CarouselViewAdapter extends RecyclerView.Adapter<CarouselViewAdapter.CarouselAdapterViewHolder> implements View.OnClickListener {
 
   private CarouselViewListener carouselViewListener;
+  private CarouselViewItemClickListener carouselViewItemClickListener;
   private int resource;
   private int size;
   private RecyclerView recyclerView;
@@ -27,6 +28,10 @@ public class CarouselViewAdapter extends RecyclerView.Adapter<CarouselViewAdapte
     this.carouselOffset = new CarouselOffset();
   }
 
+  public void setCarouselViewItemClickListener(CarouselViewItemClickListener carouselViewItemClickListener){
+    this.carouselViewItemClickListener = carouselViewItemClickListener;
+  }
+
   @NonNull
   @Override
   public CarouselAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -40,11 +45,25 @@ public class CarouselViewAdapter extends RecyclerView.Adapter<CarouselViewAdapte
       this.carouselViewListener.onBindView(holder.itemView, position);
     }
     this.carouselOffset.init(recyclerView, holder.itemView, this.spacing, this.isOffsetStart);
+
+    if (carouselViewItemClickListener != null) {
+      holder.itemView.setOnClickListener(this);
+      holder.itemView.setTag(holder);
+    }
   }
 
   @Override
   public int getItemCount() {
     return this.size;
+  }
+
+  @Override
+  public void onClick(View v) {
+    CarouselAdapterViewHolder viewHolder = (CarouselAdapterViewHolder) v.getTag();
+    int position = viewHolder.getLayoutPosition();
+    if (carouselViewItemClickListener != null) {
+      carouselViewItemClickListener.onItemClick(viewHolder.itemView, position);
+    }
   }
 
   static class CarouselAdapterViewHolder extends RecyclerView.ViewHolder {

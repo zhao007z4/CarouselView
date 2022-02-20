@@ -42,6 +42,7 @@ public class CarouselView extends FrameLayout {
   private int spacing;
   private int currentItem;
   private boolean isResourceSet = false;
+  private CarouselViewAdapter carouselViewAdapter;
 
   public CarouselView(@NonNull Context context) {
     super(context);
@@ -118,7 +119,8 @@ public class CarouselView extends FrameLayout {
     this.layoutManager.isOffsetStart(this.getCarouselOffset() == OffsetType.START);
     if (this.getScaleOnScroll()) this.layoutManager.setScaleOnScroll(true);
     carouselRecyclerView.setLayoutManager(this.layoutManager);
-    this.carouselRecyclerView.setAdapter(new CarouselViewAdapter(getCarouselViewListener(), getResource(), getSize(), carouselRecyclerView, this.getSpacing(), this.getCarouselOffset() == OffsetType.CENTER));
+    carouselViewAdapter = new CarouselViewAdapter(getCarouselViewListener(), getResource(), getSize(), carouselRecyclerView, this.getSpacing(), this.getCarouselOffset() == OffsetType.CENTER);
+    this.carouselRecyclerView.setAdapter(carouselViewAdapter);
     if (this.enableSnapping) {
       this.carouselRecyclerView.setOnFlingListener(null);
       this.snapHelper.attachToRecyclerView(this.carouselRecyclerView);
@@ -388,6 +390,11 @@ public class CarouselView extends FrameLayout {
         offset = OffsetType.START;
     }
     return offset;
+  }
+
+  public void setItemClickListener(CarouselViewItemClickListener carouselViewItemClickListener){
+      carouselViewAdapter.setCarouselViewItemClickListener(carouselViewItemClickListener);
+      carouselViewAdapter.notifyDataSetChanged();
   }
 
   public void show() {

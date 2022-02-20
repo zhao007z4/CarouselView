@@ -1,4 +1,11 @@
-apply plugin: 'com.android.library'
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'maven-publish'
+}
+
+group = 'com.jama.carouselview'
+version = '1.2.2'
 
 android {
     compileSdkVersion 29
@@ -8,7 +15,7 @@ android {
         minSdkVersion 17
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0"
+        versionName "1.2.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -33,3 +40,21 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 }
+
+
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                groupId = 'com.jama.carouselview'
+                artifactId = 'android-library'
+                version = '1.2.2'
+
+                //println("Components: " + components*.name)
+                from components.release
+            }
+        }
+    }
+}
+

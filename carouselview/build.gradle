@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.jama.carouselview'
-version = '1.2.2'
+version = '1.2.3'
 
 android {
     compileSdkVersion 29
@@ -15,7 +15,7 @@ android {
         minSdkVersion 17
         targetSdkVersion 29
         versionCode 1
-        versionName "1.2.2"
+        versionName "1.2.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -49,7 +49,7 @@ afterEvaluate {
             release(MavenPublication) {
                 groupId = 'com.jama.carouselview'
                 artifactId = 'android-library'
-                version = '1.2.2'
+                version = '1.2.3'
 
                 //println("Components: " + components*.name)
                 from components.release
